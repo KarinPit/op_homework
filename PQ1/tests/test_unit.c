@@ -12,22 +12,22 @@ int main(void)
     semaphore_wait(&sem);
     if (atomic_load(&sem.value) != 0)
     {
-        printf("FAIL: after wait, value should be 0 but got %d\n", atomic_load(&sem.value));
+        printf("FAIL! after the wait, value should be 0 but got %d\n", atomic_load(&sem.value));
         failed = 1;
     }
     else
     {
-        printf("PASS: value is 0 after wait\n");
+        printf("PASS! value is 0 after wait\n");
     }
     semaphore_signal(&sem);
     if (atomic_load(&sem.value) != 1)
     {
-        printf("FAIL: after signal, value should be 1 but got %d\n", atomic_load(&sem.value));
+        printf("FAIL! after the signal, value should be 1 but got %d\n", atomic_load(&sem.value));
         failed = 1;
     }
     else
     {
-        printf("PASS: value is 1 after signal\n");
+        printf("PASS! value is 1 after signal\n");
     }
 
     // Test 2: signal without wait
@@ -35,12 +35,12 @@ int main(void)
     semaphore_signal(&sem);
     if (atomic_load(&sem.value) != 1)
     {
-        printf("FAIL: after signal on 0, value should be 1 but got %d\n", atomic_load(&sem.value));
+        printf("FAIL! after the signal on 0, value should be 1 but got %d\n", atomic_load(&sem.value));
         failed = 1;
     }
     else
     {
-        printf("PASS: signal on value=0 works correctly\n");
+        printf("PASS! signal on value=0 works correctly\n");
     }
 
     return failed;

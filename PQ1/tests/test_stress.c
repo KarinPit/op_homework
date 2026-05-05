@@ -31,10 +31,10 @@ int main(void) {
 
     int final_value = atomic_load(&sem.value);
     if (final_value != INITIAL_VALUE) {
-        printf("FAIL: final value should be %d but got %d\n", INITIAL_VALUE, final_value);
+        printf("FAIL! final value should be %d but got %d\n", INITIAL_VALUE, final_value);
         return 1;
     }
 
-    printf("PASS: final value is %d after %d threads x %d ops\n", final_value, NUM_THREADS, OPS_PER_THREAD);
+    printf("PASS! final value is %d after %d threads x %d ops\n", final_value, NUM_THREADS, OPS_PER_THREAD);
     return 0;
 }

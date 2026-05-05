@@ -33,10 +33,10 @@ int main(void) {
         pthread_join(threads[i], NULL);
 
     if (atomic_load(&finished_count) != NUM_THREADS) {
-        printf("FAIL: only %d/%d threads finished\n", atomic_load(&finished_count), NUM_THREADS);
+        printf("FAIL! only %d/%d threads finished\n", atomic_load(&finished_count), NUM_THREADS);
         return 1;
     }
 
-    printf("PASS: all %d threads finished\n", NUM_THREADS);
+    printf("PASS! all %d threads finished\n", NUM_THREADS);
     return 0;
 }
