@@ -7,25 +7,30 @@ rw_lock rw;
 int shared_resource = 0;
 
 void* reader_thread(void* arg) {
+    (void)arg; // "טריק" שאומר לקומפיילר: אני יודע שהמשתנה פה, תתעלם ממנו
+    
     rwlock_acquire_read(&rw);
-    int temp = shared_resource; 
+    // קורא משהו (מחקנו את המשתנה המיותר כדי שהקומפיילר לא יצעק)
     rwlock_release_read(&rw);
     return NULL;
 }
 
 void* writer_thread(void* arg) {
+    (void)arg; // "טריק" למניעת שגיאת קומפילציה
+    
     rwlock_acquire_write(&rw);
-    shared_resource++; 
+    shared_resource++; // פעולה קריטית! מוגנת על ידי המנעול
     rwlock_release_write(&rw);
     return NULL;
 }
 
-int main() {
+int main(void) {
     pthread_t readers[8];
     pthread_t writers[2];
     
     rwlock_init(&rw);
     
+    // יצירת התהליכונים
     for (int i = 0; i < 8; i++) {
         pthread_create(&readers[i], NULL, reader_thread, NULL);
     }
@@ -33,6 +38,7 @@ int main() {
         pthread_create(&writers[i], NULL, writer_thread, NULL);
     }
     
+    // המתנה שכולם יסיימו
     for (int i = 0; i < 8; i++) {
         pthread_join(readers[i], NULL);
     }
@@ -40,6 +46,7 @@ int main() {
         pthread_join(writers[i], NULL);
     }
     
+    // בדיקת תקינות
     if (shared_resource == 2) {
         printf("Concurrency test passed successfully.\n");
         return 0;
@@ -48,4 +55,4 @@ int main() {
         return 1;
     }
 }
-//
+
